@@ -142,8 +142,9 @@ def test_chat_adapter_does_not_follow_redirects() -> None:
     thread.start()
     try:
         url = f"http://127.0.0.1:{server.server_port}/v1/chat/completions"
-        with pytest.raises(urllib.error.HTTPError):
+        with pytest.raises(urllib.error.HTTPError) as refused:
             openai_compatible._urllib_transport(url, b"{}", {"Authorization": "Bearer k"}, 5.0)
+        refused.value.close()  # release the response body (ResourceWarning on 3.14)
     finally:
         server.shutdown()
         server.server_close()
