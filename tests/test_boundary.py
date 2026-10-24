@@ -102,10 +102,10 @@ def test_allow_keys_exempts_exact_names() -> None:
         "sk-" + "a" * 32,
         "ghp_" + "A" * 36,
         "AKIA" + "ABCDEFGHIJKLMNOP",
-        "-----BEGIN RSA PRIVATE KEY-----\nMIIE",
-        "eyJhbGciOiJIUzI1.eyJzdWIiOiIxMjM0.SflKxwRJSMeKKF2QT4fwpM",
-        "Authorization was Bearer abcdefghijklmnopqrstuvwxyz012345",
-        "xoxb-1234567890-abcdef",
+        "-----BEGIN " + "RSA PRIVATE KEY-----\nMIIE",
+        "eyJ" + "hbGciOiJIUzI1" + "." + "eyJ" + "zdWIiOiIxMjM0" + "." + "SflKxwRJSMeKKF2QT4fwpM",
+        "Authorization was Bearer " + "abcdefghijklmnopqrstuvwxyz" + "012345",
+        "xox" + "b-1234567890-abcdef",
         "AIza" + "B" * 35,
     ],
 )
@@ -307,7 +307,12 @@ def test_safe_auth_cookie_and_run_together_keys_are_accepted(key: str) -> None:
 # Key names are scanned for credential value shapes too.
 @pytest.mark.parametrize(
     "key",
-    ["ghp_" + "A" * 36, "sk-" + "a" * 32, "AKIA" + "ABCDEFGHIJKLMNOP", "xoxb-1234567890-abcdef"],
+    [
+        "ghp_" + "A" * 36,
+        "sk-" + "a" * 32,
+        "AKIA" + "ABCDEFGHIJKLMNOP",
+        "xox" + "b-1234567890-abcdef",
+    ],
 )
 def test_keys_shaped_like_credentials_are_rejected_without_echoing_them(key: str) -> None:
     with pytest.raises(BoundaryError) as info:
