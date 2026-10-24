@@ -1,0 +1,77 @@
+[build-system]
+requires = ["hatchling>=1.26"]
+build-backend = "hatchling.build"
+
+[project]
+name = "earned-gate"
+version = "0.1.0"
+description = "Let a cheap typed model call skip an expensive agent turn, but only after it has earned that authority on your own labelled traffic."
+readme = "README.md"
+license = "MIT"
+license-files = ["LICENSE"]
+authors = [{ name = "Gustav Fredrikson", email = "gustavfredrikson@gmail.com" }]
+requires-python = ">=3.10"
+dependencies = []
+keywords = ["llm", "agents", "routing", "triage", "evaluation", "guardrails", "fallback"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
+    "Topic :: Software Development :: Libraries",
+    "Typing :: Typed",
+]
+
+[project.scripts]
+earned-gate = "earned_gate.cli:main"
+
+[project.urls]
+Source = "https://github.com/GustavFredrikson/earned-gate"
+Design = "https://gustavfredrikson.se/notes/not-every-model-call-is-an-agent-turn/"
+
+[dependency-groups]
+dev = ["mypy>=1.11", "pyright>=1.1.380", "pytest>=8", "pytest-cov>=5", "ruff>=0.6"]
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/earned_gate"]
+
+[tool.hatch.build.targets.sdist]
+include = ["src", "tests", "examples", "docs", "README.md", "CHANGELOG.md", "SECURITY.md", "LICENSE"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-ra"
+
+[tool.coverage.run]
+source = ["earned_gate"]
+branch = true
+
+[tool.coverage.report]
+show_missing = true
+
+[tool.mypy]
+strict = true
+python_version = "3.10"
+files = ["src", "examples"]
+
+[tool.pyright]
+include = ["src", "examples"]
+pythonVersion = "3.10"
+typeCheckingMode = "strict"
+venvPath = "."
+venv = ".venv"
+
+[tool.ruff]
+line-length = 100
+target-version = "py310"
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "B", "UP", "S", "SIM", "RUF"]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/**" = ["S101"]
